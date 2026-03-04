@@ -15,21 +15,20 @@ services:
         sync: false
       - key: WEBAPP_URL
         fromService:
-          type: static
+          type: web
           name: tma-frontend
           property: url
 
   # Frontend Service
-  - type: static
+  - type: web
     name: tma-frontend
+    runtime: static
     rootDir: tma-frontend
     buildCommand: npm install && npm run build
-    publishPath: dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
         fromService:
           type: web
           name: tma-backend
           property: url
-        # We'll need to append /api/v1 in the Render dashboard or code
-        # Actually, let's make it easy and adjust the code to handle it.
