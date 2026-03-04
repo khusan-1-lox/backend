@@ -1,0 +1,35 @@
+services:
+  # Backend Service
+  - type: web
+    name: tma-backend
+    runtime: node
+    rootDir: tma-backend
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: BOT_TOKEN
+        # This will prompt you to enter the token in Render dashboard
+        sync: false
+      - key: ADMIN_IDS
+        # Comma-separated list of Telegram IDs
+        sync: false
+      - key: WEBAPP_URL
+        fromService:
+          type: static
+          name: tma-frontend
+          property: url
+
+  # Frontend Service
+  - type: static
+    name: tma-frontend
+    rootDir: tma-frontend
+    buildCommand: npm install && npm run build
+    publishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: tma-backend
+          property: url
+        # We'll need to append /api/v1 in the Render dashboard or code
+        # Actually, let's make it easy and adjust the code to handle it.
