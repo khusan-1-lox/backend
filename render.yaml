@@ -17,7 +17,7 @@ services:
         fromService:
           type: web
           name: tma-frontend
-          property: url
+          envVarKey: RENDER_EXTERNAL_URL
 
   # Frontend Service
   - type: web
@@ -31,4 +31,4 @@ services:
         fromService:
           type: web
           name: tma-backend
-          property: url
+          envVarKey: RENDER_EXTERNAL_URL
