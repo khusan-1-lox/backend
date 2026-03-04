@@ -37,12 +37,15 @@ const authMiddleware = async (req, res, next) => {
         try {
             const existingUser = await getAsync('SELECT * FROM users WHERE id = ?', [req.user.id]);
             if (!existingUser) {
+                const usersCount = await getAsync('SELECT COUNT(*) as count FROM users');
+                const role = usersCount.count === 0 ? 'admin' : 'user';
                 const joined = new Date().toISOString().split('T')[0];
+
                 await runAsync(
-                    'INSERT INTO users (id, first_name, last_name, username, joined) VALUES (?, ?, ?, ?, ?)',
-                    [req.user.id, req.user.first_name, req.user.last_name, req.user.username, joined]
+                    'INSERT INTO users (id, first_name, last_name, username, joined, role) VALUES (?, ?, ?, ?, ?, ?)',
+                    [req.user.id, req.user.first_name, req.user.last_name, req.user.username, joined, role]
                 );
-                await runAsync('INSERT INTO audit_logs (action, type) VALUES (?, ?)', [`New user joined: ${req.user.first_name}`, 'system']);
+                await runAsync('INSERT INTO audit_logs (action, type) VALUES (?, ?)', [`New user joined: ${req.user.first_name} as ${role}`, 'system']);
             } else {
                 // Update username/name if changed
                 await runAsync(
