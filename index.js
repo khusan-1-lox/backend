@@ -58,7 +58,7 @@ bot.start((ctx) => {
     ctx.reply('Welcome to SubZero! 📓❄️\nManage your subscriptions with zero effort.\n\nClick the button below to start:', {
         reply_markup: {
             inline_keyboard: [[
-                { text: 'Open App 🚀', web_app: { url: process.env.WEBAPP_URL || 'http://localhost:5173' } }
+                { text: 'Open App 🚀', web_app: { url: process.env.WEBAPP_URL || 'https://subzero-12.onrender.com' } }
             ]]
         }
     });
@@ -84,3 +84,4 @@ if (process.env.BOT_TOKEN && process.env.BOT_TOKEN !== 'YOUR_BOT_TOKEN') {
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
